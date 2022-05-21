@@ -433,31 +433,33 @@ describe('Cart routes', () => {
 		// cleanup
 		beforeEach(() => UserModel.truncate())
 		afterAll(() => UserModel.truncate())
+		describe('POST /getcart', () => {
+			it('should return a 200 statusCode when there is a cart number in the header', async () => {
+				const newCart = await TemporaryCart.createTempCart(prodId1)
 
-		it('should return a 200 statusCode when there is a cart number in the header', async () => {
-			const newCart = await TemporaryCart.createTempCart(prodId1)
+				const cartNum = newCart.rows[0].user_cart
 
-			const cartNum = newCart.rows[0].user_cart
+				const res = await request(app)
+					.post('/cart/getCart')
+					.set({ temp_cartNum: cartNum })
 
-			const res = await request(app)
-				.post('/cart/getCart')
-				.set({ temp_cartNum: cartNum })
+				expect(res.statusCode).toBe(200)
+			})
+			it('should return the cart contents when a valid cartNumber id is provided in the header', async () => {
+				const newCart = await TemporaryCart.createTempCart(prodId1)
 
-			expect(res.statusCode).toBe(200)
+				const cartNum = newCart.rows[0].user_cart
+
+				const res = await request(app)
+					.post('/cart/getCart')
+					.set({ temp_cartNum: cartNum })
+
+				expect(res.body.length).not.toBe(0)
+				expect(res.body[0].user_cart).toBe(cartNum)
+				expect(res.body[0].prod_id).toBe(prodId1)
+			})
 		})
-		it('should return the cart contents when a valid cartNumber id is provided in the header', async () => {
-			const newCart = await TemporaryCart.createTempCart(prodId1)
 
-			const cartNum = newCart.rows[0].user_cart
-
-			const res = await request(app)
-				.post('/cart/getCart')
-				.set({ temp_cartNum: cartNum })
-
-			expect(res.body.length).not.toBe(0)
-			expect(res.body[0].user_cart).toBe(cartNum)
-			expect(res.body[0].prod_id).toBe(prodId1)
-		})
 		describe('POST /add', () => {
 			it('should return a 400 statusCode when prodId is not provided', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
@@ -469,63 +471,81 @@ describe('Cart routes', () => {
 					.set({ temp_cartNum: cartNum })
 
 				expect(res.statusCode).toBe(400)
-			}) /*
+			})
 			it('should return a 200 statusCode when a prodId is provided', async () => {
-				const user = await UserModel.createUserNew(
-					registerBody.name,
-					registerBody.email,
-					registerBody.password
-				)
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
-				const cartNum = user.rows[0].cart
+				const cartNum = tempCart.rows[0].user_cart
 
 				const res = await request(app)
 					.post('/cart/add')
-					.set({ cartNum })
-					.send({ prodId: prodId1 })
+					.set({ temp_cartNum: cartNum })
+					.send({ prodId: prodId2 })
 
 				expect(res.statusCode).toBe(200)
 			})
 			it('should insert the product into cart if its not already there', async () => {
-				const user = await UserModel.createUserNew(
-					registerBody.name,
-					registerBody.email,
-					registerBody.password
-				)
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
-				const cartNum = user.rows[0].cart
+				const cartNum = tempCart.rows[0].user_cart
 
 				const res = await request(app)
 					.post('/cart/add')
-					.set({ cartNum })
-					.send({ prodId: prodId1 })
+					.set({ temp_cartNum: cartNum })
+					.send({ prodId: prodId2 })
 
-				const getCart = await PermanentCart.getCartByNum(cartNum)
+				const getCart = await TemporaryCart.getCartByNum(cartNum)
 
-				expect(getCart.rows[0].prod_id).toBe(prodId1)
+				expect(getCart.rows[0].prod_id).toBe(prodId1 || prodId2)
 				expect(getCart.rows[0].quantity).toBe(1)
 			})
 			it('should add 1 to the product quantity in cart if its already there', async () => {
-				const user = await UserModel.createUserNew(
-					registerBody.name,
-					registerBody.email,
-					registerBody.password
-				)
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
-				const cartNum = user.rows[0].cart
-
-				const addedProduct = await PermanentCart.addToCart(cartNum, prodId1)
+				const cartNum = tempCart.rows[0].user_cart
 
 				const res = await request(app)
 					.post('/cart/add')
-					.set({ cartNum })
+					.set({ temp_cartNum: cartNum })
 					.send({ prodId: prodId1 })
 
-				const getCart = await PermanentCart.getCartByNum(cartNum)
+				const getCart = await TemporaryCart.getCartByNum(cartNum)
 
 				expect(getCart.rows[0].prod_id).toBe(prodId1)
 				expect(getCart.rows[0].quantity).toBe(2)
-			}) */
+			})
+
+			it('-----------------------------', () => {})
+
+			it('should return a 200 statusCode when no cartNum is provided', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.statusCode).toBe(200)
+			})
+			it('should create a temporary cart and return a cartNum property in body.res when no cartNum is provided', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body).toHaveProperty('cartNum')
+			})
+			it('should return a valid cart number in cartNum property in res.body', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body.cartNum).toMatch(uuidRegEx)
+			})
+			it('should add the product to the newly created cart with quantity = 1', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body.cart[0].prod_id).toBe(prodId1)
+				expect(res.body.cart[0].quantity).toBe(1)
+			})
 		})
 	})
 })

@@ -45,11 +45,23 @@ cartRouter.post('/add', checkCart, async (req, res) => {
 	}
 
 	if (status === 'Temporary') {
-		const inserted = TemporaryCart.addToCart(cartNum, prodId)
-		return res.status(200).json(inserted.rows)
+		const checkExists = await TemporaryCart.getCartByNum(cartNum)
+		if (checkExists.rows.length === 0) {
+			const inserted = TemporaryCart.addToCart(cartNum, prodId)
+			return res.status(200).json(inserted.rows)
+		} else {
+			const added = TemporaryCart.addQuantity(cartNum, prodId)
+			return res.status(200).json(added.rows)
+		}
 	}
 
-	return res.status(200).json('added.rows')
+	if (status === 'None') {
+		const createdCart = await TemporaryCart.createTempCart(prodId)
+		const cart = await TemporaryCart.getCartByNum(createdCart.rows[0].user_cart)
+		return res
+			.status(200)
+			.json({ cartNum: createdCart.rows[0].user_cart, cart: cart.rows })
+	}
 })
 
 cartRouter.get('/test', (req, res) => {
