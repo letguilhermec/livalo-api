@@ -29,7 +29,7 @@ class Model {
 
 	async createUserWithTempCart(name, email, password, temp_cartNum) {
 		return this.pool.query(
-			`INSERT INTO ${this.table} (name, email, password, cart) VALUES ('${name}', '${email}', '${password}', '${cart}') RETURNING *`
+			`INSERT INTO ${this.table} (name, email, password, cart) VALUES ('${name}', '${email}', '${password}', '${temp_cartNum}') RETURNING *`
 		)
 	}
 }
