@@ -39,13 +39,13 @@ class Model {
 
 	async addQuantity(cartNum, prodId) {
 		return this.pool.query(
-			`UPDATE ${this.table} SET quantity = quantity + 1 WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}'`
+			`UPDATE ${this.table} SET quantity = quantity + 1 WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}' RETURNING *`
 		)
 	}
 
 	async subQuantity(cartNum, prodId) {
 		return this.pool.query(
-			`UPDATE ${this.table} SET quantity = quantity - 1 WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}'`
+			`UPDATE ${this.table} SET quantity = quantity - 1 WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}' RETURNING *`
 		)
 	}
 

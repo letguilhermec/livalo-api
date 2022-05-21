@@ -60,12 +60,38 @@ cartRouter.post('/add', checkCart, async (req, res) => {
 		const cart = await TemporaryCart.getCartByNum(createdCart.rows[0].user_cart)
 		return res
 			.status(200)
-			.json({ cartNum: createdCart.rows[0].user_cart, cart: cart.rows })
+			.json({ cartNum: cart.rows[0].user_cart, cart: cart.rows })
 	}
 })
 
-cartRouter.get('/test', (req, res) => {
-	res.json('Teste')
+cartRouter.put('/sub', checkCart, async (req, res) => {
+	const { prodId } = req.body
+	const status = req.cartStatus
+	const cartNum = req.cartNum
+
+	if (!prodId) {
+		return res.status(400).json('No selected product')
+	}
+
+	if (status === 'None') {
+		return res.status(400).json('No cart number informed')
+	}
+
+	if (status === 'Permanent') {
+		const subItem = await PermanentCart.subQuantity(cartNum, prodId)
+		if (subItem.rows.length === 0) {
+			return res.status(400).json('Action could not be performed')
+		}
+		return res.status(200).json(subItem.rows)
+	}
+
+	if (status === 'Temporary') {
+		const subItem = await TemporaryCart.subQuantity(cartNum, prodId)
+		if (subItem.rows.length === 0) {
+			return res.status(400).json(subItem.rows)
+		}
+		return res.status(200).json(subItem.rows)
+	}
 })
 
 module.exports = cartRouter
