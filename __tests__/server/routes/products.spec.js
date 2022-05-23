@@ -22,7 +22,7 @@ describe('Products routes', () => {
 			expect(res.body).toBe(expectedValue)
 		})
 	})
-	describe('GET /:offset', () => {
+	describe('GET /show/:offset', () => {
 		it('should return a 200 statusCode', async () => {
 			const res = await request(app).get('/products/show/1')
 

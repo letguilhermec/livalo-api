@@ -352,8 +352,7 @@ describe('Cart routes', () => {
 				const res = await request(app).post('/cart/getcart').set({ cartNum })
 
 				expect(res.body.length).not.toBe(0)
-				expect(res.body[0].user_cart).toBe(cartNum)
-				expect(res.body[0].prod_id).toBe(prodId1)
+				expect(res.body[0].id).toBe(prodId1)
 			})
 		})
 		describe('POST /add', () => {
@@ -544,7 +543,10 @@ describe('Cart routes', () => {
 	describe('for TEMPORARY carts', () => {
 		// cleanup
 		beforeEach(() => UserModel.truncate())
+		beforeEach(() => TemporaryCart.truncate())
 		afterAll(() => UserModel.truncate())
+		afterAll(() => TemporaryCart.truncate())
+
 		describe('POST /getcart', () => {
 			it('should return a 200 statusCode when there is a cart number in the header', async () => {
 				const newCart = await TemporaryCart.createTempCart(prodId1)
@@ -567,8 +569,7 @@ describe('Cart routes', () => {
 					.set({ temp_cartNum: cartNum })
 
 				expect(res.body.length).not.toBe(0)
-				expect(res.body[0].user_cart).toBe(cartNum)
-				expect(res.body[0].prod_id).toBe(prodId1)
+				expect(res.body[0].id).toBe(prodId1)
 			})
 		})
 

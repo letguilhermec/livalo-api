@@ -15,6 +15,10 @@ class Model {
 		return this.pool.query(`SELECT * FROM ${this.table} WHERE id = '${id}'`)
 	}
 
+	async getNameById(id) {
+		return this.pool.query(`SELECT name FROM ${this.table} WHERE id = '${id}'`)
+	}
+
 	async getUserByEmail(email) {
 		return this.pool.query(
 			`SELECT * FROM ${this.table} WHERE email = '${email}'`

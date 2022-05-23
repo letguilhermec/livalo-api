@@ -25,6 +25,12 @@ class Model {
 		)
 	}
 
+	async getFromCart(cartNum) {
+		return this.pool.query(
+			`SELECT prods.id, prods.image, prods.name, prods.brand, prods.price, ${this.table}.quantity FROM prods JOIN ${this.table} ON prods.id = ${this.table}.prod_id AND ${this.table}.user_cart = '${cartNum}'`
+		)
+	}
+
 	async addToCart(cartNum, prodId) {
 		return this.pool.query(
 			`INSERT INTO ${this.table} (user_cart, prod_id) VALUES ('${cartNum}', '${prodId}') RETURNING *`

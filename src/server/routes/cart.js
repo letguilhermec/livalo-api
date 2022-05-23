@@ -12,12 +12,14 @@ cartRouter.post('/getcart', checkCart, async (req, res) => {
 	const status = req.cartStatus
 
 	if (status === 'Permanent') {
-		cart = await PermanentCart.getCartByNum(req.cartNum)
+		// cart = await PermanentCart.getCartByNum(req.cartNum)
+		cart = await PermanentCart.getFromCart(req.cartNum)
 		return res.status(200).json(cart.rows)
 	}
 
 	if (status === 'Temporary') {
-		cart = await TemporaryCart.getCartByNum(req.cartNum)
+		// cart = await TemporaryCart.getCartByNum(req.cartNum)
+		cart = await TemporaryCart.getFromCart(req.cartNum)
 		return res.status(200).json(cart.rows)
 	}
 

@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const app = require('../../../src/server/app/server')
 const Model = require('../../../src/server/utils/models/userModel')
 const { compare } = require('bcrypt')
+const jwtGenerator = require('../../../src/server/utils/middleware/jwtGenerator')
 
 const body = {
 	name: 'any_name',
@@ -277,6 +278,94 @@ describe('user route', () => {
 			const payload = jwt.verify(res.body.token, process.env.JWT_SECRET)
 
 			expect(payload.user).toBe(userId)
+		})
+	})
+	describe('GET /is-verify', () => {
+		it('should return a 400 statusCode if no valid JWT Token is provided', async () => {
+			const res = await request(app).get('/users/is-verify')
+
+			expect(res.statusCode).toBe(403)
+		})
+		it('should return a "Not authorized" message in res.body if no valid JWT Token is provided', async () => {
+			const res = await request(app).get('/users/is-verify')
+
+			expect(res.body).toBe('Not authorized')
+		})
+		it('should return a 200 statusCode if a valid JWT Token is provided', async () => {
+			const hashedPassword = await bcrypt.hash(body.password, 8)
+			const newUser = await UserModel.createUserNew(
+				body.name,
+				body.email,
+				hashedPassword
+			)
+
+			const login = await request(app).post('/users/login').send(loginBody)
+
+			const token = login.body.token
+
+			const res = await request(app).get('/users/is-verify').set({ token })
+
+			expect(res.statusCode).toBe(200)
+		})
+		it('should return a "true" boolean in res.body if a valid JWT Token is provided', async () => {
+			const hashedPassword = await bcrypt.hash(body.password, 8)
+			const newUser = await UserModel.createUserNew(
+				body.name,
+				body.email,
+				hashedPassword
+			)
+
+			const login = await request(app).post('/users/login').send(loginBody)
+
+			const token = login.body.token
+
+			const res = await request(app).get('/users/is-verify').set({ token })
+
+			expect(res.body).toBe(true)
+		})
+	})
+	describe('GET /dashboard', () => {
+		it('should return a 400 statusCode if no valid JWT Token is provided', async () => {
+			const res = await request(app).get('/users/dashboard')
+
+			expect(res.statusCode).toBe(403)
+		})
+		it('should return a "Not authorized" message in res.body if no valid JWT Token is provided', async () => {
+			const res = await request(app).get('/users/dashboard')
+
+			expect(res.body).toBe('Not authorized')
+		})
+		it('should return a 200 statusCode if a valid JWT Token is provided', async () => {
+			const hashedPassword = await bcrypt.hash(body.password, 8)
+			const newUser = await UserModel.createUserNew(
+				body.name,
+				body.email,
+				hashedPassword
+			)
+
+			const login = await request(app).post('/users/login').send(loginBody)
+
+			const token = login.body.token
+
+			const res = await request(app).get('/users/dashboard').set({ token })
+
+			expect(res.statusCode).toBe(200)
+		})
+		it('should return a the user name if a valid JWT Token is provided', async () => {
+			const hashedPassword = await bcrypt.hash(body.password, 8)
+			const newUser = await UserModel.createUserNew(
+				body.name,
+				body.email,
+				hashedPassword
+			)
+
+			const login = await request(app).post('/users/login').send(loginBody)
+
+			const token = login.body.token
+
+			const res = await request(app).get('/users/dashboard').set({ token })
+
+			expect(res.body.name).toBe(body.name)
 		})
 	})
 })
