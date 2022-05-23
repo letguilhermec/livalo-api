@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1653156808070" clover="3.2.0">
-  <project timestamp="1653156808070" name="All files">
-    <metrics statements="186" coveredstatements="174" conditionals="60" coveredconditionals="55" methods="41" coveredmethods="34" elements="287" coveredelements="263" complexity="0" loc="186" ncloc="186" packages="4" files="11" classes="11"/>
+<coverage generated="1653332617023" clover="3.2.0">
+  <project timestamp="1653332617023" name="All files">
+    <metrics statements="212" coveredstatements="200" conditionals="62" coveredconditionals="57" methods="48" coveredmethods="40" elements="322" coveredelements="297" complexity="0" loc="212" ncloc="212" packages="4" files="13" classes="13"/>
     <package name="app">
-      <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="pool.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/app/pool.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="12" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
       </file>
       <file name="server.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/app/server.js">
-        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="5" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="8" count="3" type="stmt"/>
-        <line num="11" count="3" type="stmt"/>
-        <line num="12" count="3" type="stmt"/>
-        <line num="14" count="3" type="stmt"/>
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+        <line num="16" count="4" type="stmt"/>
       </file>
     </package>
     <package name="routes">
-      <metrics statements="96" coveredstatements="89" conditionals="40" coveredconditionals="36" methods="5" coveredmethods="5"/>
+      <metrics statements="107" coveredstatements="100" conditionals="40" coveredconditionals="36" methods="7" coveredmethods="7"/>
       <file name="cart.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/routes/cart.js">
         <metrics statements="58" coveredstatements="56" conditionals="28" coveredconditionals="25" methods="3" coveredmethods="3"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="5" count="3" type="stmt"/>
-        <line num="7" count="3" type="stmt"/>
-        <line num="8" count="3" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
         <line num="12" count="6" type="stmt"/>
         <line num="14" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="15" count="2" type="stmt"/>
@@ -42,7 +44,7 @@
         <line num="20" count="2" type="stmt"/>
         <line num="21" count="2" type="stmt"/>
         <line num="24" count="2" type="stmt"/>
-        <line num="27" count="3" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
         <line num="28" count="12" type="stmt"/>
         <line num="29" count="12" type="stmt"/>
         <line num="30" count="12" type="stmt"/>
@@ -66,7 +68,7 @@
         <line num="59" count="4" type="stmt"/>
         <line num="60" count="4" type="stmt"/>
         <line num="61" count="4" type="stmt"/>
-        <line num="67" count="3" type="stmt"/>
+        <line num="67" count="4" type="stmt"/>
         <line num="68" count="14" type="stmt"/>
         <line num="69" count="14" type="stmt"/>
         <line num="70" count="14" type="stmt"/>
@@ -84,17 +86,31 @@
         <line num="90" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="91" count="1" type="stmt"/>
         <line num="93" count="1" type="stmt"/>
-        <line num="97" count="3" type="stmt"/>
+        <line num="97" count="4" type="stmt"/>
+      </file>
+      <file name="products.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/routes/products.js">
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
       </file>
       <file name="user.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/routes/user.js">
         <metrics statements="38" coveredstatements="33" conditionals="12" coveredconditionals="11" methods="2" coveredmethods="2"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="5" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="8" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
         <line num="9" count="11" type="stmt"/>
         <line num="10" count="11" type="stmt"/>
         <line num="11" count="11" type="cond" truecount="2" falsecount="0"/>
@@ -112,7 +128,7 @@
         <line num="39" count="7" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="46" count="3" type="stmt"/>
+        <line num="46" count="4" type="stmt"/>
         <line num="47" count="7" type="stmt"/>
         <line num="48" count="7" type="stmt"/>
         <line num="50" count="7" type="stmt"/>
@@ -125,14 +141,14 @@
         <line num="64" count="4" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
-        <line num="71" count="3" type="stmt"/>
+        <line num="71" count="4" type="stmt"/>
       </file>
     </package>
     <package name="utils.middleware">
       <metrics statements="34" coveredstatements="32" conditionals="20" coveredconditionals="19" methods="4" coveredmethods="4"/>
       <file name="checkCart.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/middleware/checkCart.js">
         <metrics statements="15" coveredstatements="13" conditionals="8" coveredconditionals="8" methods="1" coveredmethods="1"/>
-        <line num="1" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
         <line num="2" count="32" type="stmt"/>
         <line num="3" count="32" type="stmt"/>
         <line num="4" count="32" type="stmt"/>
@@ -150,15 +166,15 @@
       </file>
       <file name="jwtGenerator.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/middleware/jwtGenerator.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="2" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
         <line num="5" count="11" type="stmt"/>
         <line num="8" count="11" type="stmt"/>
-        <line num="11" count="3" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
       </file>
       <file name="validInfo.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/middleware/validInfo.js">
         <metrics statements="14" coveredstatements="14" conditionals="12" coveredconditionals="11" methods="2" coveredmethods="2"/>
-        <line num="1" count="3" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
         <line num="2" count="29" type="stmt"/>
         <line num="5" count="21" type="stmt"/>
         <line num="8" count="29" type="cond" truecount="2" falsecount="0"/>
@@ -175,13 +191,13 @@
       </file>
     </package>
     <package name="utils.models">
-      <metrics statements="44" coveredstatements="41" conditionals="0" coveredconditionals="0" methods="32" coveredmethods="25"/>
+      <metrics statements="57" coveredstatements="54" conditionals="2" coveredconditionals="2" methods="37" coveredmethods="29"/>
       <file name="PermanentCartModel.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/models/PermanentCartModel.js">
         <metrics statements="12" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="6"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="6" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="11" count="13" type="stmt"/>
         <line num="17" count="11" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
@@ -189,14 +205,14 @@
         <line num="35" count="5" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="51" count="3" type="stmt"/>
+        <line num="51" count="4" type="stmt"/>
       </file>
       <file name="TemporaryCartModel.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/models/TemporaryCartModel.js">
         <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="9"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="5" count="4" type="stmt"/>
-        <line num="6" count="4" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
         <line num="11" count="21" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="23" count="20" type="stmt"/>
@@ -205,7 +221,23 @@
         <line num="41" count="6" type="stmt"/>
         <line num="47" count="3" type="stmt"/>
         <line num="53" count="12" type="stmt"/>
-        <line num="57" count="3" type="stmt"/>
+        <line num="57" count="4" type="stmt"/>
+      </file>
+      <file name="productsModel.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/models/productsModel.js">
+        <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="4"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="15" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="32" count="4" type="stmt"/>
       </file>
       <file name="quantityModel.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/models/quantityModel.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
@@ -221,16 +253,16 @@
       </file>
       <file name="userModel.js" path="/Users/guizaps/Code/DB/finalapi-tests/src/server/utils/models/userModel.js">
         <metrics statements="10" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="5"/>
-        <line num="1" count="3" type="stmt"/>
-        <line num="5" count="5" type="stmt"/>
-        <line num="6" count="5" type="stmt"/>
-        <line num="7" count="5" type="stmt"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="7" count="6" type="stmt"/>
         <line num="11" count="165" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
         <line num="19" count="20" type="stmt"/>
         <line num="25" count="37" type="stmt"/>
         <line num="31" count="4" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
+        <line num="37" count="4" type="stmt"/>
       </file>
     </package>
   </project>
