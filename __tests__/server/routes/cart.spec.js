@@ -609,7 +609,7 @@ describe('Cart routes', () => {
 
 				const getCart = await TemporaryCart.getCartByNum(cartNum)
 
-				expect(getCart.rows[0].prod_id).toBe(prodId1 || prodId2)
+				expect(getCart.rows[0].prod_id).toBe(prodId2 || prodId1)
 				expect(getCart.rows[0].quantity).toBe(1)
 			})
 			it('should add 1 to the product quantity in cart if its already there', async () => {
@@ -626,38 +626,6 @@ describe('Cart routes', () => {
 
 				expect(getCart.rows[0].prod_id).toBe(prodId1)
 				expect(getCart.rows[0].quantity).toBe(2)
-			})
-
-			it('-----------------------------', () => {})
-
-			it('should return a 200 statusCode when no cartNum is provided', async () => {
-				const res = await request(app)
-					.post('/cart/add')
-					.send({ prodId: prodId1 })
-
-				expect(res.statusCode).toBe(200)
-			})
-			it('should create a temporary cart and return a cartNum property in body.res when no cartNum is provided', async () => {
-				const res = await request(app)
-					.post('/cart/add')
-					.send({ prodId: prodId1 })
-
-				expect(res.body).toHaveProperty('cartNum')
-			})
-			it('should return a valid cart number in cartNum property in res.body', async () => {
-				const res = await request(app)
-					.post('/cart/add')
-					.send({ prodId: prodId1 })
-
-				expect(res.body.cartNum).toMatch(uuidRegEx)
-			})
-			it('should add the product to the newly created cart with quantity = 1', async () => {
-				const res = await request(app)
-					.post('/cart/add')
-					.send({ prodId: prodId1 })
-
-				expect(res.body.cart[0].prod_id).toBe(prodId1)
-				expect(res.body.cart[0].quantity).toBe(1)
 			})
 		})
 		describe('PUT /sub', () => {
@@ -744,6 +712,46 @@ describe('Cart routes', () => {
 				expect(res.statusCode).toBe(200)
 				expect(newAdd.rows[0].quantity).toBe(2)
 				expect(res.body[0].quantity).toBe(1)
+			})
+		})
+	})
+	describe('for NO cart', () => {
+		describe('POST /add', () => {
+			it('should return a 200 statusCode when no cartNum is provided', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.statusCode).toBe(200)
+			})
+			it('should create a temporary cart and return a cartNum property in body.res when no cartNum is provided', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body).toHaveProperty('cartNum')
+			})
+			it('should return a valid cart number in cartNum property in res.body', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body.cartNum).toMatch(uuidRegEx)
+			})
+			it('should return the cart info in a cart property in res.body', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body).toHaveProperty('cart')
+			})
+			it('should add the product to the newly created cart with quantity = 1', async () => {
+				const res = await request(app)
+					.post('/cart/add')
+					.send({ prodId: prodId1 })
+
+				expect(res.body.cart[0].prod_id).toBe(prodId1)
+				expect(res.body.cart[0].quantity).toBe(1)
 			})
 		})
 	})

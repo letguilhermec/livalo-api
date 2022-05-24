@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const app = require('../../../src/server/app/server')
 const Model = require('../../../src/server/utils/models/userModel')
+const tempModel = require('../../../src/server/utils/models/TemporaryCartModel')
+const permModel = require('../../../src/server/utils/models/PermanentCartModel')
 const { compare } = require('bcrypt')
 const jwtGenerator = require('../../../src/server/utils/middleware/jwtGenerator')
 
@@ -19,7 +21,14 @@ const loginBody = {
 	password: 'any_password'
 }
 
+const temp_cartNum = 'a2e0b120-2a73-4beb-8689-654610215bb1'
+
+const prodId1 = 'CO515ACF40TTV'
+const prodId2 = 'CO515ACF37BAW'
+
 const UserModel = new Model('users')
+const TemporaryCart = new tempModel('temp_cart')
+const PermanentCart = new permModel('prods_cart')
 
 describe('user route', () => {
 	beforeEach(() => UserModel.truncate())
@@ -148,10 +157,51 @@ describe('user route', () => {
 
 			expect(payload.user).toBe(userId)
 		})
+		describe('when a temporary cart number is provided', () => {
+			it('should create a user and assign the temporary cart number to the permanent user info', async () => {
+				const res = await request(app)
+					.post('/users/register')
+					.set({ temp_cartNum })
+					.send(body)
+
+				const checkUser = await UserModel.getUserByEmail(body.email)
+
+				expect(checkUser.rows[0].cart).toBe(temp_cartNum)
+			})
+			it('should transfer the temporary cart items to the permanent user cart', async () => {
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
+
+				const temp_cartNum = tempCart.rows[0].user_cart
+
+				const res = await request(app)
+					.post('/users/register')
+					.set({ temp_cartNum })
+					.send(body)
+
+				const checkPermCart = await PermanentCart.getCartByNum(temp_cartNum)
+
+				expect(checkPermCart.rows[0].prod_id).toBe(prodId1)
+			})
+			it('should delete the temporary cart after transfering the items to the permanent user cart', async () => {
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
+
+				const temp_cartNum = tempCart.rows[0].user_cart
+
+				const res = await request(app)
+					.post('/users/register')
+					.set({ temp_cartNum })
+					.send(body)
+
+				const checkTempcart = await TemporaryCart.getCartByNum(temp_cartNum)
+
+				expect(checkTempcart.rows.length).toBe(0)
+			})
+		})
 	})
 	describe('POST /login', () => {
 		beforeEach(() => UserModel.truncate())
 		afterEach(() => UserModel.truncate())
+		afterAll(() => TemporaryCart.truncate())
 
 		it('should return a 400 statusCode when email || password are not provided', async () => {
 			const bodyData = [{ email: body.email }, { password: body.password }, {}]
@@ -278,6 +328,92 @@ describe('user route', () => {
 			const payload = jwt.verify(res.body.token, process.env.JWT_SECRET)
 
 			expect(payload.user).toBe(userId)
+		})
+		describe('when a temporary cart number is provided', () => {
+			it('should add the item in temporary cart to permanent user_cart with the correct quantity when the item is not already there', async () => {
+				const hashedPassword = await bcrypt.hash(body.password, 8)
+				const newUser = await UserModel.createUserNew(
+					body.name,
+					body.email,
+					hashedPassword
+				)
+
+				const cartNum = newUser.rows[0].cart
+
+				const permCart1 = await PermanentCart.getCartByNum(cartNum)
+
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
+
+				const temp_cartNum = tempCart.rows[0].user_cart
+
+				const res = await request(app)
+					.post('/users/login')
+					.set({ temp_cartNum })
+					.send(loginBody)
+
+				const permCart2 = await PermanentCart.getCartByNum(cartNum)
+
+				expect(permCart1.rows.length).toBe(0)
+				expect(permCart2.rows.length).toBe(1)
+				expect(permCart2.rows[0].quantity).toBe(1)
+			})
+			it('should increase the item quantity in the permanent user_cart when the item is already there', async () => {
+				const hashedPassword = await bcrypt.hash(body.password, 8)
+				const newUser = await UserModel.createUserNew(
+					body.name,
+					body.email,
+					hashedPassword
+				)
+
+				const cartNum = newUser.rows[0].cart
+
+				const permCart1 = await PermanentCart.getCartByNum(cartNum)
+
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
+
+				const temp_cartNum = tempCart.rows[0].user_cart
+
+				const added1 = await TemporaryCart.addQuantity(temp_cartNum, prodId1)
+				const added2 = await TemporaryCart.addQuantity(temp_cartNum, prodId1)
+
+				const tempCartQty = await TemporaryCart.getCartByNum(temp_cartNum)
+
+				const quantity = tempCartQty.rows[0].quantity
+
+				const res = await request(app)
+					.post('/users/login')
+					.set({ temp_cartNum })
+					.send(loginBody)
+
+				const permCart2 = await PermanentCart.getCartByNum(cartNum)
+
+				expect(permCart1.rows.length).toBe(0)
+				expect(permCart2.rows.length).toBe(1)
+				expect(permCart2.rows[0].quantity).toBe(quantity)
+			})
+			it('should delete the temporary cart after transfering the items to the permanent user cart', async () => {
+				const hashedPassword = await bcrypt.hash(body.password, 8)
+				const newUser = await UserModel.createUserNew(
+					body.name,
+					body.email,
+					hashedPassword
+				)
+
+				const cartNum = newUser.rows[0].cart
+
+				const tempCart = await TemporaryCart.createTempCart(prodId1)
+
+				const temp_cartNum = tempCart.rows[0].user_cart
+
+				const res = await request(app)
+					.post('/users/login')
+					.set({ temp_cartNum })
+					.send(body)
+
+				const checkTempcart = await TemporaryCart.getCartByNum(temp_cartNum)
+
+				expect(checkTempcart.rows.length).toBe(0)
+			})
 		})
 	})
 	describe('GET /is-verify', () => {

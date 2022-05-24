@@ -72,16 +72,36 @@ usersRouter.post('/login', validInfo, checkCart, async (req, res) => {
 			return res.status(400).json('Password or email is incorrect')
 		}
 
-		if (req.cartStatus === 'Temporary') {
-			const transferCart = await PermanentCart.insertFromTempCart(
-				req.cartNum,
-				user.rows[0].cart
-			)
-			const deletedCart = await TemporaryCart.deleteTempCart(req.cartNum)
-		}
-
 		const token = jwtGenerator(user.rows[0].id)
 		const cartNum = user.rows[0].cart
+
+		if (req.cartStatus === 'Temporary') {
+			const temp_cartNum = req.cartNum
+
+			const productsList = await TemporaryCart.getProdsFromCart(temp_cartNum)
+
+			for (const prod of productsList.rows) {
+				const checkExists = await PermanentCart.checkProduct(
+					cartNum,
+					prod.prod_id
+				)
+				if (checkExists.rows.length === 0) {
+					const inserted = await PermanentCart.addToCartQty(
+						cartNum,
+						prod.prod_id,
+						prod.quantity
+					)
+				} else {
+					const added = await PermanentCart.addQuantityQty(
+						cartNum,
+						prod.prod_id,
+						prod.quantity
+					)
+				}
+			}
+
+			const deletedCart = await TemporaryCart.deleteTempCart(temp_cartNum)
+		}
 
 		return res.status(200).json({ token, cartNum })
 	} catch (err) {

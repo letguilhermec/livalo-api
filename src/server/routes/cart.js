@@ -36,7 +36,7 @@ cartRouter.post('/add', checkCart, async (req, res) => {
 	}
 
 	if (status === 'Permanent') {
-		const checkExists = await PermanentCart.getCartByNum(cartNum)
+		const checkExists = await PermanentCart.checkProduct(cartNum, prodId)
 		if (checkExists.rows.length === 0) {
 			const inserted = PermanentCart.addToCart(cartNum, prodId)
 			return res.status(200).json(inserted.rows)
@@ -47,7 +47,7 @@ cartRouter.post('/add', checkCart, async (req, res) => {
 	}
 
 	if (status === 'Temporary') {
-		const checkExists = await TemporaryCart.getCartByNum(cartNum)
+		const checkExists = await TemporaryCart.checkProduct(cartNum, prodId)
 		if (checkExists.rows.length === 0) {
 			const inserted = TemporaryCart.addToCart(cartNum, prodId)
 			return res.status(200).json(inserted.rows)

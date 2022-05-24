@@ -15,7 +15,7 @@ class Model {
 
 	async deleteTempCart(cartNum) {
 		return this.pool.query(
-			`DELETE FROM ${this.table} WHERE user_cart = '${cartNum}'`
+			`DELETE FROM ${this.table} WHERE user_cart = '${cartNum}' RETURNING *`
 		)
 	}
 
@@ -25,9 +25,21 @@ class Model {
 		)
 	}
 
+	async checkProduct(cartNum, prodId) {
+		return this.pool.query(
+			`SELECT * FROM ${this.table} WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}'`
+		)
+	}
+
 	async getFromCart(cartNum) {
 		return this.pool.query(
 			`SELECT prods.id, prods.image, prods.name, prods.brand, prods.price, ${this.table}.quantity FROM prods JOIN ${this.table} ON prods.id = ${this.table}.prod_id AND ${this.table}.user_cart = '${cartNum}'`
+		)
+	}
+
+	async getProdsFromCart(cartNum) {
+		return this.pool.query(
+			`SELECT prod_id, quantity FROM ${this.table} WHERE user_cart = '${cartNum}'`
 		)
 	}
 

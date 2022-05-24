@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.55% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>56/58</span>
+                <span class='fraction'>58/58</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.28% </span>
+                <span class="strong">92.85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/28</span>
+                <span class='fraction'>26/28</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.55% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>56/58</span>
+                <span class='fraction'>58/58</span>
             </div>
         
             
@@ -191,15 +191,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -210,21 +210,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -299,7 +299,7 @@ cartRouter.post('/add', checkCart, async (req, res) =&gt; {
 	}
 &nbsp;
 	if (status === 'Permanent') {
-		const checkExists = await PermanentCart.getCartByNum(cartNum)
+		const checkExists = await PermanentCart.checkProduct(cartNum, prodId)
 		if (checkExists.rows.length === 0) {
 			const inserted = PermanentCart.addToCart(cartNum, prodId)
 			return res.status(200).json(inserted.rows)
@@ -310,10 +310,10 @@ cartRouter.post('/add', checkCart, async (req, res) =&gt; {
 	}
 &nbsp;
 	if (status === 'Temporary') {
-		const checkExists = await TemporaryCart.getCartByNum(cartNum)
-		<span class="missing-if-branch" title="if path not taken" >I</span>if (checkExists.rows.length === 0) {
-			const inserted = <span class="cstat-no" title="statement not covered" >TemporaryCart.addToCart(cartNum, prodId)</span>
-<span class="cstat-no" title="statement not covered" >			return res.status(200).json(inserted.rows)</span>
+		const checkExists = await TemporaryCart.checkProduct(cartNum, prodId)
+		if (checkExists.rows.length === 0) {
+			const inserted = TemporaryCart.addToCart(cartNum, prodId)
+			return res.status(200).json(inserted.rows)
 		} else {
 			const added = TemporaryCart.addQuantity(cartNum, prodId)
 			return res.status(200).json(added.rows)
@@ -367,7 +367,7 @@ module.exports = cartRouter
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Mon May 23 2022 18:40:01 GMT-0300 (Brasilia Standard Time)
+                at Tue May 24 2022 13:49:28 GMT-0300 (Brasilia Standard Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
