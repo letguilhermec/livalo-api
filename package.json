@@ -1,0 +1,33 @@
+{
+  "name": "finalapi-tests",
+  "jest": {
+    "testPathIgnorePatterns": ["src", "__tests__/__mocks__"]
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage --no-cache --watchAll --detectOpenHandles",
+    "start": "node src/server/app/index.js"
+  },
+  "keywords": [],
+  "author": "Guilherme Correa",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^28.1.0",
+    "prettier": "^2.6.2",
+    "supertest": "^6.2.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.3"
+  }
+}

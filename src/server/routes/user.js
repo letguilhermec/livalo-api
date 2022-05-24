@@ -16,7 +16,6 @@ const TemporaryCart = new tempCart('temp_cart')
 usersRouter.post('/register', validInfo, checkCart, async (req, res) => {
 	try {
 		const { name, email, password, password2 } = req.body
-		const tempCart = req.header('temp_cartNum') || null
 
 		if (password !== password2) {
 			return res.status(400).json('Passwords must match')
@@ -31,12 +30,12 @@ usersRouter.post('/register', validInfo, checkCart, async (req, res) => {
 
 		let newUser
 
-		if (tempCart) {
+		if (req.cartStatus === 'Temporary') {
 			newUser = await UserModel.createUserWithTempCart(
 				name,
 				email,
 				hashedPassword,
-				tempCart
+				req.cartNum
 			)
 			const transferCart = await PermanentCart.insertFromTempCart(
 				req.cartNum,
