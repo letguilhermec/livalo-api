@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1653414682774" clover="3.2.0">
-  <project timestamp="1653414682774" name="All files">
+<coverage generated="1653416971599" clover="3.2.0">
+  <project timestamp="1653416971599" name="All files">
     <metrics statements="267" coveredstatements="251" conditionals="68" coveredconditionals="63" methods="59" coveredmethods="51" elements="394" coveredelements="365" complexity="0" loc="267" ncloc="267" packages="4" files="14" classes="14"/>
     <package name="app">
       <metrics statements="21" coveredstatements="21" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
@@ -9,7 +9,7 @@
         <line num="1" count="4" type="stmt"/>
         <line num="2" count="4" type="stmt"/>
         <line num="4" count="4" type="stmt"/>
-        <line num="12" count="4" type="stmt"/>
+        <line num="8" count="4" type="stmt"/>
       </file>
       <file name="server.js" path="/Users/guizaps/Code/DB/e-commerce-api-tests/src/server/app/server.js">
         <metrics statements="17" coveredstatements="17" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
