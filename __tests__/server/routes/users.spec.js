@@ -35,17 +35,18 @@ describe('user route', () => {
 	afterEach(() => UserModel.truncate())
 
 	describe('POST /register', () => {
+
 		it('should return a 400 statusCode when name || email || password || password2 are not provided', async () => {
 			const res = await request(app).post('/users/register')
 
 			expect(res.statusCode).toBe(400)
 		})
+
 		it('should return a "Missing credentials" in res.body when name || email || password || password2 are not provided', async () => {
 			const res = await request(app).post('/users/register')
 
 			expect(res.body).toBe('Missing credentials')
 		})
-		it('-----------------------------', () => {})
 
 		it('should return a 400 statusCode when an invalid email is provided', async () => {
 			const res = await request(app)
@@ -54,6 +55,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(400)
 		})
+
 		it('should return a "Invalid Email" message in res.body when name || email || password || password2 are not provided', async () => {
 			const res = await request(app)
 				.post('/users/register')
@@ -61,7 +63,6 @@ describe('user route', () => {
 
 			expect(res.body).toBe('Invalid Email')
 		})
-		it('-----------------------------', () => {})
 
 		it('should return a 400 statusCode when password !== password2', async () => {
 			const res = await request(app)
@@ -77,7 +78,7 @@ describe('user route', () => {
 
 			expect(res.body).toBe('Passwords must match')
 		})
-		it('-----------------------------', () => {})
+		
 		it('should return a 400 statusCode if user is already registered', async () => {
 			const newUser = await UserModel.createUserNew(
 				body.name,
@@ -89,6 +90,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(400)
 		})
+
 		it('should return a "User already registered" if user is already registered', async () => {
 			const newUser = await UserModel.createUserNew(
 				body.name,
@@ -100,7 +102,7 @@ describe('user route', () => {
 
 			expect(res.body).toBe('User already registered')
 		})
-		it('-----------------------------', () => {})
+		
 		it('should insert the new user in DB with a different password (hashed)', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
@@ -108,6 +110,7 @@ describe('user route', () => {
 
 			expect(insertedUser.rows[0].password).not.toBe(body.password)
 		})
+
 		it('should insert the new user in DB with a different password (hashed)', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
@@ -120,12 +123,13 @@ describe('user route', () => {
 
 			expect(comparedPasswords).toBe(true)
 		})
-		it('-----------------------------', () => {})
+		
 		it('should return a cartNum property in res.body containing the cart number assingned to the inserted user', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
 			expect(res.body).toHaveProperty('cartNum')
 		})
+
 		it('should return a valid cart number inside cartNum property in res.body ', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
@@ -134,12 +138,13 @@ describe('user route', () => {
 
 			expect(res.body.cartNum).toMatch(uuidRegEx)
 		})
-		it('-----------------------------', () => {})
+		
 		it('should return a token property in res.body containing a JWT token', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
 			expect(res.body).toHaveProperty('token')
 		})
+
 		it('should return a valid JWT token inside token property in res.body', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
@@ -147,6 +152,7 @@ describe('user route', () => {
 
 			expect(payload).toHaveProperty('user')
 		})
+
 		it('should return a JWT token with the user id inside payload', async () => {
 			const res = await request(app).post('/users/register').send(body)
 
@@ -157,7 +163,9 @@ describe('user route', () => {
 
 			expect(payload.user).toBe(userId)
 		})
+
 		describe('when a temporary cart number is provided', () => {
+
 			it('should create a user and assign the temporary cart number to the permanent user info', async () => {
 				const res = await request(app)
 					.post('/users/register')
@@ -168,6 +176,7 @@ describe('user route', () => {
 
 				expect(checkUser.rows[0].cart).toBe(temp_cartNum)
 			})
+
 			it('should transfer the temporary cart items to the permanent user cart', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -182,6 +191,7 @@ describe('user route', () => {
 
 				expect(checkPermCart.rows[0].prod_id).toBe(prodId1)
 			})
+
 			it('should delete the temporary cart after transfering the items to the permanent user cart', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -212,6 +222,7 @@ describe('user route', () => {
 				expect(res.statusCode).toBe(400)
 			}
 		})
+
 		it('should return a "Missing credentials" message in res.body', async () => {
 			const bodyData = [{ email: body.email }, { password: body.password }, {}]
 
@@ -221,7 +232,7 @@ describe('user route', () => {
 				expect(res.body).toBe('Missing credentials')
 			}
 		})
-		it('-----------------------------', () => {})
+		
 		it('should returen a 400 statusCode if an incorrect email is provided', async () => {
 			const newUser = await UserModel.createUserNew(
 				body.name,
@@ -234,6 +245,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(400)
 		})
+
 		it('should return a "Password or email is incorrect" message if an incorrect email is provided', async () => {
 			const newUser = await UserModel.createUserNew(
 				body.name,
@@ -246,7 +258,7 @@ describe('user route', () => {
 
 			expect(res.body).toBe('Password or email is incorrect')
 		})
-		it('-----------------------------', () => {})
+		
 		it('should return a 400 statusCode if the incorrect password is provided', async () => {
 			const newUser = await UserModel.createUserNew(
 				body.name,
@@ -260,6 +272,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(400)
 		})
+
 		it('should return a "Password or email is incorrect" if the incorrect password is provided', async () => {
 			const newUser = await UserModel.createUserNew(
 				body.name,
@@ -273,7 +286,7 @@ describe('user route', () => {
 
 			expect(res.body).toBe('Password or email is incorrect')
 		})
-		it('-----------------------------', () => {})
+		
 		it('should return a 200 message if the correct credentials are provided', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -286,6 +299,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(200)
 		})
+
 		it('should return a token property in res.body', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -298,6 +312,7 @@ describe('user route', () => {
 
 			expect(res.body).toHaveProperty('token')
 		})
+
 		it('should return a valid JWT token inside the token property in res.body', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -312,6 +327,7 @@ describe('user route', () => {
 
 			expect(payload).toHaveProperty('user')
 		})
+
 		it('should return a JWT token with the user id inside payload', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -329,7 +345,9 @@ describe('user route', () => {
 
 			expect(payload.user).toBe(userId)
 		})
+
 		describe('when a temporary cart number is provided', () => {
+
 			it('should add the item in temporary cart to permanent user_cart with the correct quantity when the item is not already there', async () => {
 				const hashedPassword = await bcrypt.hash(body.password, 8)
 				const newUser = await UserModel.createUserNew(
@@ -357,6 +375,7 @@ describe('user route', () => {
 				expect(permCart2.rows.length).toBe(1)
 				expect(permCart2.rows[0].quantity).toBe(1)
 			})
+
 			it('should increase the item quantity in the permanent user_cart when the item is already there', async () => {
 				const hashedPassword = await bcrypt.hash(body.password, 8)
 				const newUser = await UserModel.createUserNew(
@@ -391,6 +410,7 @@ describe('user route', () => {
 				expect(permCart2.rows.length).toBe(1)
 				expect(permCart2.rows[0].quantity).toBe(quantity)
 			})
+
 			it('should delete the temporary cart after transfering the items to the permanent user cart', async () => {
 				const hashedPassword = await bcrypt.hash(body.password, 8)
 				const newUser = await UserModel.createUserNew(
@@ -417,16 +437,19 @@ describe('user route', () => {
 		})
 	})
 	describe('GET /is-verify', () => {
+
 		it('should return a 400 statusCode if no valid JWT Token is provided', async () => {
 			const res = await request(app).get('/users/is-verify')
 
 			expect(res.statusCode).toBe(403)
 		})
+
 		it('should return a "Not authorized" message in res.body if no valid JWT Token is provided', async () => {
 			const res = await request(app).get('/users/is-verify')
 
 			expect(res.body).toBe('Not authorized')
 		})
+
 		it('should return a 200 statusCode if a valid JWT Token is provided', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -443,6 +466,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(200)
 		})
+
 		it('should return a "true" boolean in res.body if a valid JWT Token is provided', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -461,16 +485,19 @@ describe('user route', () => {
 		})
 	})
 	describe('GET /dashboard', () => {
+
 		it('should return a 400 statusCode if no valid JWT Token is provided', async () => {
 			const res = await request(app).get('/users/dashboard')
 
 			expect(res.statusCode).toBe(403)
 		})
+
 		it('should return a "Not authorized" message in res.body if no valid JWT Token is provided', async () => {
 			const res = await request(app).get('/users/dashboard')
 
 			expect(res.body).toBe('Not authorized')
 		})
+
 		it('should return a 200 statusCode if a valid JWT Token is provided', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -487,6 +514,7 @@ describe('user route', () => {
 
 			expect(res.statusCode).toBe(200)
 		})
+
 		it('should return a the user name if a valid JWT Token is provided', async () => {
 			const hashedPassword = await bcrypt.hash(body.password, 8)
 			const newUser = await UserModel.createUserNew(
@@ -503,5 +531,6 @@ describe('user route', () => {
 
 			expect(res.body.name).toBe(body.name)
 		})
+		
 	})
 })

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1653413336698" clover="3.2.0">
-  <project timestamp="1653413336698" name="All files">
+<coverage generated="1653414503219" clover="3.2.0">
+  <project timestamp="1653414503219" name="All files">
     <metrics statements="267" coveredstatements="251" conditionals="68" coveredconditionals="63" methods="59" coveredmethods="51" elements="394" coveredelements="365" complexity="0" loc="267" ncloc="267" packages="4" files="14" classes="14"/>
     <package name="app">
       <metrics statements="21" coveredstatements="21" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
@@ -277,7 +277,7 @@
         <line num="53" count="1" type="stmt"/>
         <line num="59" count="6" type="stmt"/>
         <line num="65" count="3" type="stmt"/>
-        <line num="71" count="27" type="stmt"/>
+        <line num="71" count="26" type="stmt"/>
         <line num="75" count="4" type="stmt"/>
       </file>
       <file name="productsModel.js" path="/Users/guizaps/Code/DB/e-commerce-api-tests/src/server/utils/models/productsModel.js">
@@ -314,7 +314,7 @@
         <line num="5" count="6" type="stmt"/>
         <line num="6" count="6" type="stmt"/>
         <line num="7" count="6" type="stmt"/>
-        <line num="11" count="194" type="stmt"/>
+        <line num="11" count="169" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
         <line num="19" count="2" type="stmt"/>
         <line num="23" count="31" type="stmt"/>

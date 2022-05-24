@@ -263,8 +263,6 @@ describe('The temporary cart Model', () => {
 		expect(getCart2.rows.length).toBe(0)
 	})
 
-	it('-----------------------------', () => {})
-
 	it('should create a new temp_cart when a prodId is added to cart and the user has no assingned cartNum', async () => {
 		const newCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -308,11 +306,13 @@ describe('Cart routes', () => {
 	afterAll(() => UserModel.truncate())
 
 	describe('when there is no cart number in the header', () => {
+		
 		it('should return a 400 statusCode', async () => {
 			const res = await request(app).post('/cart/getcart')
 
 			expect(res.statusCode).toBe(400)
 		})
+
 		it('should return a "No cart number informed" message in res.body', async () => {
 			const res = await request(app).post('/cart/getcart')
 
@@ -322,6 +322,7 @@ describe('Cart routes', () => {
 
 	describe('for PERMANENT carts', () => {
 		describe('POST /getcart', () => {
+
 			it('should return a 200 statusCode when there is a cart number in the header', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -335,6 +336,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(200)
 			})
+
 			it('should return the cart contents when a valid cart number id is provided in the header', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -356,6 +358,7 @@ describe('Cart routes', () => {
 			})
 		})
 		describe('POST /add', () => {
+
 			it('should return a 400 statusCode when prodId is not provided', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -369,6 +372,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a 200 statusCode when a prodId is provided', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -385,6 +389,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(200)
 			})
+
 			it('should insert the product into cart if its not already there', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -404,6 +409,7 @@ describe('Cart routes', () => {
 				expect(getCart.rows[0].prod_id).toBe(prodId1)
 				expect(getCart.rows[0].quantity).toBe(1)
 			})
+
 			it('should add 1 to the product quantity in cart if its already there', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -427,6 +433,7 @@ describe('Cart routes', () => {
 			})
 		})
 		describe('PUT /sub', () => {
+
 			it('should return a 400 statusCode when prodId is not provided in req.body', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -440,6 +447,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a "No selected product" message in res.body when prodId is not provided in req.body', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -453,6 +461,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toBe('No selected product')
 			})
+
 			it('should return a 400 statusCode when cartNum is not provided in req.header', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -468,6 +477,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a "No cart number informed" message in res.body when cartNum is not provided in req.header', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -483,6 +493,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toBe('No cart number informed')
 			})
+
 			it('should return a 400 statusCode when the prodId is not in cart', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -499,6 +510,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a "Action could not be performed" message in res.body when the prodId is not in cart', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -515,6 +527,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toBe('Action could not be performed')
 			})
+
 			it('should subtract 1 from quantity when quantity > 1', async () => {
 				const user = await UserModel.createUserNew(
 					registerBody.name,
@@ -548,6 +561,7 @@ describe('Cart routes', () => {
 		afterAll(() => TemporaryCart.truncate())
 
 		describe('POST /getcart', () => {
+
 			it('should return a 200 statusCode when there is a cart number in the header', async () => {
 				const newCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -559,6 +573,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(200)
 			})
+
 			it('should return the cart contents when a valid cartNumber id is provided in the header', async () => {
 				const newCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -574,6 +589,7 @@ describe('Cart routes', () => {
 		})
 
 		describe('POST /add', () => {
+
 			it('should return a 400 statusCode when prodId is not provided', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -585,6 +601,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a 200 statusCode when a prodId is provided', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -597,6 +614,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(200)
 			})
+
 			it('should insert the product into cart if its not already there', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -612,6 +630,7 @@ describe('Cart routes', () => {
 				expect(getCart.rows[0].prod_id).toBe(prodId2 || prodId1)
 				expect(getCart.rows[0].quantity).toBe(1)
 			})
+
 			it('should add 1 to the product quantity in cart if its already there', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -629,6 +648,7 @@ describe('Cart routes', () => {
 			})
 		})
 		describe('PUT /sub', () => {
+
 			it('should return a 400 statusCode when prodId is not provided in req.body', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -640,6 +660,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a "No selected product" message in res.body when prodId is not provided in req.body', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -651,6 +672,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toBe('No selected product')
 			})
+
 			it('should return a 400 statusCode when cartNum is not provided in req.header', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -662,6 +684,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a "No cart number informed" message in res.body when cartNum is not provided in req.header', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -673,6 +696,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toBe('No cart number informed')
 			})
+
 			it('should return a 400 statusCode when the prodId is not in cart', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -685,6 +709,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(400)
 			})
+
 			it('should return a "Action could not be performed" message in res.body when the prodId is not in cart', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -697,6 +722,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toBe('Action could not be performed')
 			})
+
 			it('should subtract 1 from quantity when quantity > 1', async () => {
 				const tempCart = await TemporaryCart.createTempCart(prodId1)
 
@@ -717,6 +743,7 @@ describe('Cart routes', () => {
 	})
 	describe('for NO cart', () => {
 		describe('POST /add', () => {
+
 			it('should return a 200 statusCode when no cartNum is provided', async () => {
 				const res = await request(app)
 					.post('/cart/add')
@@ -724,6 +751,7 @@ describe('Cart routes', () => {
 
 				expect(res.statusCode).toBe(200)
 			})
+
 			it('should create a temporary cart and return a cartNum property in body.res when no cartNum is provided', async () => {
 				const res = await request(app)
 					.post('/cart/add')
@@ -731,6 +759,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toHaveProperty('cartNum')
 			})
+
 			it('should return a valid cart number in cartNum property in res.body', async () => {
 				const res = await request(app)
 					.post('/cart/add')
@@ -738,6 +767,7 @@ describe('Cart routes', () => {
 
 				expect(res.body.cartNum).toMatch(uuidRegEx)
 			})
+
 			it('should return the cart info in a cart property in res.body', async () => {
 				const res = await request(app)
 					.post('/cart/add')
@@ -745,6 +775,7 @@ describe('Cart routes', () => {
 
 				expect(res.body).toHaveProperty('cart')
 			})
+
 			it('should add the product to the newly created cart with quantity = 1', async () => {
 				const res = await request(app)
 					.post('/cart/add')
