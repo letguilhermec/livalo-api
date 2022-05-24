@@ -13,119 +13,123 @@ const PermanentCart = new permCart('prods_cart')
 const tempCart = require('../utils/models/TemporaryCartModel')
 const TemporaryCart = new tempCart('temp_cart')
 
+usersRouter.get('/test', (req, res) => {
+  return res.send('teste')
+})
+
 usersRouter.post('/register', validInfo, checkCart, async (req, res) => {
-	try {
-		const { name, email, password, password2 } = req.body
+  try {
+    const { name, email, password, password2 } = req.body
 
-		if (password !== password2) {
-			return res.status(400).json('Passwords must match')
-		}
+    if (password !== password2) {
+      return res.status(400).json('Passwords must match')
+    }
 
-		let checkUser = await UserModel.getUserByEmail(email)
-		if (checkUser.rows.length !== 0) {
-			return res.status(400).json('User already registered')
-		}
+    let checkUser = await UserModel.getUserByEmail(email)
+    if (checkUser.rows.length !== 0) {
+      return res.status(400).json('User already registered')
+    }
 
-		const hashedPassword = await bcrypt.hash(password, 8)
+    const hashedPassword = await bcrypt.hash(password, 8)
 
-		let newUser
+    let newUser
 
-		if (req.cartStatus === 'Temporary') {
-			newUser = await UserModel.createUserWithTempCart(
-				name,
-				email,
-				hashedPassword,
-				req.cartNum
-			)
-			const transferCart = await PermanentCart.insertFromTempCart(
-				req.cartNum,
-				newUser.rows[0].cart
-			)
-			const deletedCart = await TemporaryCart.deleteTempCart(req.cartNum)
-		} else {
-			newUser = await UserModel.createUserNew(name, email, hashedPassword)
-		}
+    if (req.cartStatus === 'Temporary') {
+      newUser = await UserModel.createUserWithTempCart(
+        name,
+        email,
+        hashedPassword,
+        req.cartNum
+      )
+      const transferCart = await PermanentCart.insertFromTempCart(
+        req.cartNum,
+        newUser.rows[0].cart
+      )
+      const deletedCart = await TemporaryCart.deleteTempCart(req.cartNum)
+    } else {
+      newUser = await UserModel.createUserNew(name, email, hashedPassword)
+    }
 
-		const token = jwtGenerator(newUser.rows[0].id)
-		const cartNum = newUser.rows[0].cart
-		return res.status(201).json({ token, cartNum })
-	} catch (err) {
-		console.error(err.message)
-		res.status(500).send('Server error')
-	}
+    const token = jwtGenerator(newUser.rows[0].id)
+    const cartNum = newUser.rows[0].cart
+    return res.status(201).json({ token, cartNum })
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server error')
+  }
 })
 
 usersRouter.post('/login', validInfo, checkCart, async (req, res) => {
-	try {
-		const { email, password } = req.body
+  try {
+    const { email, password } = req.body
 
-		const user = await UserModel.getUserByEmail(email)
+    const user = await UserModel.getUserByEmail(email)
 
-		if (user.rows.length === 0) {
-			return res.status(400).json('Password or email is incorrect')
-		}
+    if (user.rows.length === 0) {
+      return res.status(400).json('Password or email is incorrect')
+    }
 
-		const validPassword = await bcrypt.compare(password, user.rows[0].password)
+    const validPassword = await bcrypt.compare(password, user.rows[0].password)
 
-		if (!validPassword) {
-			return res.status(400).json('Password or email is incorrect')
-		}
+    if (!validPassword) {
+      return res.status(400).json('Password or email is incorrect')
+    }
 
-		const token = jwtGenerator(user.rows[0].id)
-		const cartNum = user.rows[0].cart
+    const token = jwtGenerator(user.rows[0].id)
+    const cartNum = user.rows[0].cart
 
-		if (req.cartStatus === 'Temporary') {
-			const temp_cartNum = req.cartNum
+    if (req.cartStatus === 'Temporary') {
+      const temp_cartNum = req.cartNum
 
-			const productsList = await TemporaryCart.getProdsFromCart(temp_cartNum)
+      const productsList = await TemporaryCart.getProdsFromCart(temp_cartNum)
 
-			for (const prod of productsList.rows) {
-				const checkExists = await PermanentCart.checkProduct(
-					cartNum,
-					prod.prod_id
-				)
-				if (checkExists.rows.length === 0) {
-					const inserted = await PermanentCart.addToCartQty(
-						cartNum,
-						prod.prod_id,
-						prod.quantity
-					)
-				} else {
-					const added = await PermanentCart.addQuantityQty(
-						cartNum,
-						prod.prod_id,
-						prod.quantity
-					)
-				}
-			}
+      for (const prod of productsList.rows) {
+        const checkExists = await PermanentCart.checkProduct(
+          cartNum,
+          prod.prod_id
+        )
+        if (checkExists.rows.length === 0) {
+          const inserted = await PermanentCart.addToCartQty(
+            cartNum,
+            prod.prod_id,
+            prod.quantity
+          )
+        } else {
+          const added = await PermanentCart.addQuantityQty(
+            cartNum,
+            prod.prod_id,
+            prod.quantity
+          )
+        }
+      }
 
-			const deletedCart = await TemporaryCart.deleteTempCart(temp_cartNum)
-		}
+      const deletedCart = await TemporaryCart.deleteTempCart(temp_cartNum)
+    }
 
-		return res.status(200).json({ token, cartNum })
-	} catch (err) {
-		console.error(err.message)
-		return res.status(500).send('Server error')
-	}
+    return res.status(200).json({ token, cartNum })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).send('Server error')
+  }
 })
 
 usersRouter.get('/is-verify', authorization, async (req, res) => {
-	try {
-		return res.json(true)
-	} catch (err) {
-		console.error(err.message)
-		return res.status(500).json('Server error')
-	}
+  try {
+    return res.json(true)
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).json('Server error')
+  }
 })
 
 usersRouter.get('/dashboard', authorization, async (req, res) => {
-	try {
-		const user = await UserModel.getNameById(req.user)
-		return res.json(user.rows[0])
-	} catch (err) {
-		console.error(err.message)
-		return res.status(500).json('Server error')
-	}
+  try {
+    const user = await UserModel.getNameById(req.user)
+    return res.json(user.rows[0])
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).json('Server error')
+  }
 })
 
 module.exports = usersRouter
