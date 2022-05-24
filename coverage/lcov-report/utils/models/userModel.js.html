@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/12</span>
+                <span class='fraction'>6/12</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>2/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.9% </span>
+                <span class="strong">54.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/11</span>
+                <span class='fraction'>6/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -114,7 +114,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">169x</span>
+<span class="cline-any cline-yes">143x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,23 +122,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">44x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,24 +162,24 @@ class Model {
 <span class="cstat-no" title="statement not covered" >		return this.pool.query(`SELECT * FROM ${this.table} WHERE id = '${id}'`)</span>
 	}
 &nbsp;
-	async getNameById(id) {
-		return this.pool.query(`SELECT name FROM ${this.table} WHERE id = '${id}'`)
+<span class="fstat-no" title="function not covered" >	as</span>ync getNameById(id) {
+<span class="cstat-no" title="statement not covered" >		return this.pool.query(`SELECT name FROM ${this.table} WHERE id = '${id}'`)</span>
 	}
 &nbsp;
-	async getUserByEmail(email) {
-		return this.pool.query(
+<span class="fstat-no" title="function not covered" >	as</span>ync getUserByEmail(email) {
+<span class="cstat-no" title="statement not covered" >		return this.pool.query(</span>
 			`SELECT * FROM ${this.table} WHERE email = '${email}'`
 		)
 	}
 &nbsp;
-	async createUserNew(name, email, password) {
-		return this.pool.query(
+<span class="fstat-no" title="function not covered" >	as</span>ync createUserNew(name, email, password) {
+<span class="cstat-no" title="statement not covered" >		return this.pool.query(</span>
 			`INSERT INTO ${this.table} (name, email, password) VALUES ('${name}', '${email}', '${password}') RETURNING *`
 		)
 	}
 &nbsp;
-	async createUserWithTempCart(name, email, password, temp_cartNum) {
-		return this.pool.query(
+<span class="fstat-no" title="function not covered" >	as</span>ync createUserWithTempCart(name, email, password, temp_cartNum) {
+<span class="cstat-no" title="statement not covered" >		return this.pool.query(</span>
 			`INSERT INTO ${this.table} (name, email, password, cart) VALUES ('${name}', '${email}', '${password}', '${temp_cartNum}') RETURNING *`
 		)
 	}
@@ -193,7 +193,7 @@ module.exports = Model
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue May 24 2022 15:29:31 GMT-0300 (Brasilia Standard Time)
+                at Tue May 24 2022 15:45:30 GMT-0300 (Brasilia Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
