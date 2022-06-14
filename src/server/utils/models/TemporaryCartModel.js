@@ -51,7 +51,7 @@ class Model {
 
 	async deleteFromCart(cartNum, prodId) {
 		return this.pool.query(
-			`DELETE FROM ${this.table} WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}'`
+			`DELETE FROM ${this.table} WHERE user_cart = '${cartNum}' AND prod_id = '${prodId}' RETURNING prod_id`
 		)
 	}
 

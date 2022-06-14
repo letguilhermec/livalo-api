@@ -96,4 +96,26 @@ cartRouter.put('/sub', checkCart, async (req, res) => {
 	}
 })
 
+cartRouter.delete('/del', checkCart, async (req, res) => {
+	const {prodId} = req.body
+	const status = req.cartStatus
+	const cartNum = req.cartNum
+
+	if (!prodId) {
+		return res.status(400).json('No selected product')
+	}
+
+	if (status === 'None') {
+		return res.status(400).json('No cart number informed')
+	}
+
+	if (status === 'Permanent') {
+		const delItem = await PermanentCart.deleteFromCart(cartNum, prodId)
+		if (delItem.rows.length === 0) {
+			return res.status(400).json('Product not found on cart')
+		}
+		return res.status(200).json(delItem.rows)
+	}
+})
+
 module.exports = cartRouter
