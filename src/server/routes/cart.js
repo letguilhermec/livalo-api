@@ -116,6 +116,14 @@ cartRouter.delete('/del', checkCart, async (req, res) => {
 		}
 		return res.status(200).json(delItem.rows)
 	}
+
+	if (status === "Temporary") {
+		const delItem = await TemporaryCart.deleteFromCart(cartNum, prodId)
+		if (delItem.rows.length === 0) {
+			return res.status(400).json('Product not found on cart')
+		}
+		return res.status(200).json(delItem.rows)
+	}
 })
 
 module.exports = cartRouter
