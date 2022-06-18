@@ -23,7 +23,7 @@ cartRouter.post('/getcart', checkCart, async (req, res) => {
     return res.status(200).json(cart.rows)
   }
 
-  return res.status(400).json('No cart number informed')
+  return res.status(400).json('Nenhum número de carrinho informado')
 })
 
 cartRouter.post('/add', checkCart, async (req, res) => {
@@ -32,7 +32,7 @@ cartRouter.post('/add', checkCart, async (req, res) => {
   const { prodId } = req.body
 
   if (!prodId) {
-    return res.status(400).json('No selected product')
+    return res.status(400).json('Nenhum produto selecionado')
   }
 
   if (status === 'Permanent') {
@@ -72,17 +72,17 @@ cartRouter.put('/sub', checkCart, async (req, res) => {
   const cartNum = req.cartNum
 
   if (!prodId) {
-    return res.status(400).json('No selected product')
+    return res.status(400).json('Nenhum produto selecionado')
   }
 
   if (status === 'None') {
-    return res.status(400).json('No cart number informed')
+    return res.status(400).json('Nenhum número de carrinho informado')
   }
 
   if (status === 'Permanent') {
     const subItem = await PermanentCart.subQuantity(cartNum, prodId)
     if (subItem.rows.length === 0) {
-      return res.status(400).json('Action could not be performed')
+      return res.status(400).json('Ação não pôde ser concluída')
     }
     return res.status(200).json(subItem.rows)
   }
@@ -90,7 +90,7 @@ cartRouter.put('/sub', checkCart, async (req, res) => {
   if (status === 'Temporary') {
     const subItem = await TemporaryCart.subQuantity(cartNum, prodId)
     if (subItem.rows.length === 0) {
-      return res.status(400).json('Action could not be performed')
+      return res.status(400).json('Ação não pôde ser concluída')
     }
     return res.status(200).json(subItem.rows)
   }
@@ -102,17 +102,17 @@ cartRouter.delete('/del', checkCart, async (req, res) => {
   const cartNum = req.cartNum
 
   if (!prodId) {
-    return res.status(400).json('No selected product')
+    return res.status(400).json('Nenhum produto selecionado')
   }
 
   if (status === 'None') {
-    return res.status(400).json('No cart number informed')
+    return res.status(400).json('Nenhum número de carrinho informado')
   }
 
   if (status === 'Permanent') {
     const delItem = await PermanentCart.deleteFromCart(cartNum, prodId)
     if (delItem.rows.length === 0) {
-      return res.status(400).json('Product not found on cart')
+      return res.status(400).json('Produto não encontrado no carrinho')
     }
     return res.status(200).json(delItem.rows)
   }
@@ -120,7 +120,7 @@ cartRouter.delete('/del', checkCart, async (req, res) => {
   if (status === "Temporary") {
     const delItem = await TemporaryCart.deleteFromCart(cartNum, prodId)
     if (delItem.rows.length === 0) {
-      return res.status(400).json('Product not found on cart')
+      return res.status(400).json('Produto não encontrado no carrinho')
     }
     return res.status(200).json(delItem.rows)
   }
