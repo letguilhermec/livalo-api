@@ -22,12 +22,12 @@ usersRouter.post('/register', validInfo, checkCart, async (req, res) => {
     const { name, email, password, password2 } = req.body
 
     if (password !== password2) {
-      return res.status(400).json('Passwords must match')
+      return res.status(400).json('As senhas devem ser iguais')
     }
 
     let checkUser = await UserModel.getUserByEmail(email)
     if (checkUser.rows.length !== 0) {
-      return res.status(400).json('User already registered')
+      return res.status(400).json('Usuário já cadastrado')
     }
 
     const hashedPassword = await bcrypt.hash(password, 8)
@@ -66,13 +66,13 @@ usersRouter.post('/login', validInfo, checkCart, async (req, res) => {
     const user = await UserModel.getUserByEmail(email)
 
     if (user.rows.length === 0) {
-      return res.status(400).json('Password or email is incorrect')
+      return res.status(400).json('Senha ou e-mail incorretos')
     }
 
     const validPassword = await bcrypt.compare(password, user.rows[0].password)
 
     if (!validPassword) {
-      return res.status(400).json('Password or email is incorrect')
+      return res.status(400).json('Senha ou e-mail incorretos')
     }
 
     const token = jwtGenerator(user.rows[0].id)
