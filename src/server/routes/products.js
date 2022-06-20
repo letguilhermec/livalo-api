@@ -2,6 +2,8 @@ const productsRouter = require('express').Router()
 
 const prodModel = require('../utils/models/productsModel')
 const ProductsModel = new prodModel('prods')
+const infoModel = require('../utils/models/prodsInfoModel')
+const ProdsInfoModel = new infoModel('prods_info')
 
 productsRouter.get('/show/:offset', async (req, res) => {
   let offset = Number(req.params.offset)
@@ -20,7 +22,8 @@ productsRouter.get('/all', async (req, res) => {
 })
 
 productsRouter.get('/product/:id', async (req, res) => {
-  return res.status(200).json(req.params.id)
+  const product = await ProdsInfoModel.getProduct(req.params.id)
+  return res.status(200).json(product.rows)
 })
 
 module.exports = productsRouter
