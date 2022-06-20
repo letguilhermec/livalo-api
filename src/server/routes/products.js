@@ -22,7 +22,8 @@ productsRouter.get('/all', async (req, res) => {
 })
 
 productsRouter.get('/product/:id', async (req, res) => {
-  return res.status(200).json(req.params.id)
+  const product = await ProdsInfoModel.getProduct(req.params.id)
+  return res.status(200).json(product.rows)
 })
 
 module.exports = productsRouter
