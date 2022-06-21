@@ -8,7 +8,7 @@ class Model {
   }
 
   async getProduct(prodId) {
-    return this.pool.query(`SELECT prods.brand, prods.name, prods.price, prods_info.* FROM prods JOIN ${this.table} ON prods.id = '${prodId}'`)
+    return this.pool.query(`SELECT prods.brand, prods.name, prods.price, prods_info.prod_id, prods_info.description, prods_info.rating, prods_info.information, prods_info.keywords, prods_info.payment, prods_info.more_imgs FROM prods JOIN ${this.table} ON prods.id = prods_info.prod_id AND prods.id = '${prodId}'`)
   }
 }
 
